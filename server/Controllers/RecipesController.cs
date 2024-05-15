@@ -44,13 +44,28 @@ public class RecipesController : ControllerBase
     }
   }
 
-  [Authorize]
   [HttpGet("{recipeId}")]
   public ActionResult<Recipe> GetRecipeById(int recipeId)
   {
     try
     {
       Recipe recipe = _recipesService.GetRecipeById(recipeId);
+      return Ok(recipe);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpPut("{recipeId}")]
+  public async Task<ActionResult<Recipe>> UpdateRecipe(int recipeId, [FromBody] Recipe recipeData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      Recipe recipe = _recipesService.UpdateRecipe(recipeId, userInfo.Id, recipeData);
       return Ok(recipe);
     }
     catch (Exception exception)
