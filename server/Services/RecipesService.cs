@@ -17,6 +17,7 @@ public class RecipesService
     return recipe;
   }
 
+
   internal List<Recipe> GetAllRecipes()
   {
     List<Recipe> recipes = _repository.GetAllRecipes();
@@ -46,5 +47,16 @@ public class RecipesService
 
     Recipe updatedRecipe = _repository.UpdateRecipe(recipeToUpdate);
     return updatedRecipe;
+  }
+
+  internal string DestroyRecipe(int recipeId, string userId)
+  {
+    Recipe recipeToDestroy = GetRecipeById(recipeId);
+    if (recipeToDestroy.CreatorId != userId)
+    {
+      throw new Exception("You cannot delete this recipe, you are not the creator!");
+    }
+    _repository.DestroyRecipe(recipeId);
+    return $"{recipeToDestroy.Title} has been removed";
   }
 }

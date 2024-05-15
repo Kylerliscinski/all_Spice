@@ -2,6 +2,7 @@
 
 
 
+
 namespace all_Spice.Repositories;
 
 public class RecipesRepository
@@ -87,5 +88,11 @@ public class RecipesRepository
 
     Recipe recipe = _db.Query<Recipe, Profile, Recipe>(sql, PopulateCreator, recipeToUpdate).FirstOrDefault();
     return recipe;
+  }
+
+  internal void DestroyRecipe(int recipeId)
+  {
+    string sql = "DELETE FROM recipes WHERE id = @recipeId;";
+    _db.Execute(sql, new { recipeId });
   }
 }
