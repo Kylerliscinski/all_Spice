@@ -33,5 +33,15 @@ public class IngredientsService
     return ingredients;
   }
 
-  internal Ingredient GetIngredientById
+  internal Ingredient GetIngredientById(int ingredientId)
+  {
+    Ingredient ingredient = _repository.GetIngredientById(ingredientId);
+
+    if (ingredient == null)
+    {
+      throw new Exception($"Invalid id: {ingredientId}");
+    }
+
+    return ingredient;
+  }
 }
