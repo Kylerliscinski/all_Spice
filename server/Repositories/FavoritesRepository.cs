@@ -1,4 +1,5 @@
 
+
 namespace all_Spice.Repositories;
 
 public class FavoritesRepository
@@ -36,5 +37,29 @@ public class FavoritesRepository
     }, favoriteData).FirstOrDefault();
 
     return favorites;
+  }
+
+  internal List<FavoriteRecipe> GetMyFavoriteRecipes(string userId)
+  {
+    string sql = @"
+      SELECT
+      favorites.*,
+      recipes.*,
+      accounts.*
+      FROM favorites
+      JOIN recipes ON favorites.recipeId = recipes.id
+      JOIN accounts ON recipes.creatorId = accounts.id
+      WHERE favorites.accountId = @userId;";
+
+    List<FavoriteRecipe> favoriteRecipes = _db.Query<Favorite, FavoriteRecipe, Profile, FavoriteRecipe>
+    (sql, (favorite, recipe, profile) =>
+    {
+      recipe.FavoriteId = favorite.Id;
+      recipe.AccountId = favorite.AccountId;
+      recipe.Creator = profile;
+      return recipe;
+    }, new { userId }).ToList();
+
+    return favoriteRecipes;
   }
 }
