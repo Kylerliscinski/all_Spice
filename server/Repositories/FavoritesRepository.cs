@@ -1,5 +1,6 @@
 
 
+
 namespace all_Spice.Repositories;
 
 public class FavoritesRepository
@@ -39,6 +40,7 @@ public class FavoritesRepository
     return favorites;
   }
 
+
   internal List<FavoriteRecipe> GetMyFavoriteRecipes(string userId)
   {
     string sql = @"
@@ -61,5 +63,11 @@ public class FavoritesRepository
     }, new { userId }).ToList();
 
     return favoriteRecipes;
+  }
+  internal Favorite GetFavoriteById(int favoriteId)
+  {
+    string sql = "SELECT * FROM favorites WHERE id = @favoriteId;";
+    Favorite favorite = _db.Query<Favorite>(sql, new { favoriteId }).FirstOrDefault();
+    return favorite;
   }
 }

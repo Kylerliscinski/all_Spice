@@ -22,4 +22,16 @@ public class FavoritesService
     List<FavoriteRecipe> favoriteRecipes = _repository.GetMyFavoriteRecipes(userId);
     return favoriteRecipes;
   }
+
+  internal Favorite GetFavoriteById(int favoriteId)
+  {
+    Favorite favorite = _repository.GetFavoriteById(favoriteId);
+
+    if (favorite == null)
+    {
+      throw new Exception($"Invalid id: {favoriteId}");
+    }
+
+    return favorite;
+  }
 }
