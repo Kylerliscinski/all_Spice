@@ -44,4 +44,11 @@ public class IngredientsService
 
     return ingredient;
   }
+
+  internal string DestroyIngredient(int ingredientId, string userId)
+  {
+    Ingredient ingredient = GetIngredientById(ingredientId);
+    _repository.DestroyIngredient(ingredientId);
+    return "Ingredient was deleted!";
+  }
 }

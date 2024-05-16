@@ -1,6 +1,7 @@
 
 
 
+
 namespace all_Spice.Repositories;
 
 public class IngredientsRepository
@@ -47,5 +48,12 @@ public class IngredientsRepository
     Ingredient ingredient = _db.Query<Ingredient>(sql, new { ingredientId }).FirstOrDefault();
 
     return ingredient;
+  }
+
+  internal void DestroyIngredient(int ingredientId)
+  {
+    string sql = "DELETE FROM ingredients WHERE id = @ingredientId LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, new { ingredientId });
   }
 }
