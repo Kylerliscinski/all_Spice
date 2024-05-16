@@ -1,6 +1,7 @@
 
 
 
+
 namespace all_Spice.Repositories;
 
 public class FavoritesRepository
@@ -69,5 +70,11 @@ public class FavoritesRepository
     string sql = "SELECT * FROM favorites WHERE id = @favoriteId;";
     Favorite favorite = _db.Query<Favorite>(sql, new { favoriteId }).FirstOrDefault();
     return favorite;
+  }
+
+  internal void DestroyFavorite(int favoriteId)
+  {
+    string sql = "DELETE FROM favorites WHERE id = @favoriteId LIMIT 1;";
+    _db.Execute(sql, new { favoriteId });
   }
 }

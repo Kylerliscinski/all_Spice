@@ -34,4 +34,17 @@ public class FavoritesService
 
     return favorite;
   }
+
+  internal string DestroyFavorite(int favoriteId, string userId)
+  {
+    Favorite favoriteToDestroy = GetFavoriteById(favoriteId);
+
+    if (favoriteToDestroy.AccountId != userId)
+    {
+      throw new Exception("You cannot unfavorite this recipe, that is not your account!");
+    }
+
+    _repository.DestroyFavorite(favoriteId);
+    return "You no longer favorite this recipe";
+  }
 }
