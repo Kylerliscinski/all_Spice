@@ -1,3 +1,4 @@
+-- Active: 1715635410117@@127.0.0.1@3306@humorous_jersey_devil_65a309_db
 CREATE TABLE IF NOT EXISTS accounts (
     id VARCHAR(255) NOT NULL primary key COMMENT 'primary key',
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
@@ -35,7 +36,7 @@ CREATE TABLE ingredients (
     FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
 );
 
-CREATE TABLE favorite (
+CREATE TABLE favorites (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -45,3 +46,5 @@ CREATE TABLE favorite (
     FOREIGN KEY (accountId) REFERENCES accounts (id) ON DELETE CASCADE,
     UNIQUE (recipeId, accountId)
 );
+
+DROP TABLE favorites;

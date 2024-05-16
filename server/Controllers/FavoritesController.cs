@@ -12,4 +12,21 @@ public class FavoritesController : ControllerBase
     _favoritesService = favoritesService;
     _auth0Provider = auth0Provider;
   }
+
+  [Authorize]
+  [HttpPost]
+  public async Task<ActionResult<FavoriteRecipe>> CreateFavorite([FromBody] Favorite favoriteData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      favoriteData.AccountId = userInfo.Id;
+      FavoriteRecipe favorite = _favoritesService.CreateFavorite(favoriteData);
+      return Ok(favorite);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }
