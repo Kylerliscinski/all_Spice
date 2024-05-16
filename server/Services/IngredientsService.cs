@@ -13,13 +13,18 @@ public class IngredientsService
     _recipesService = recipesService;
   }
 
-  internal Ingredient CreateIngredient(Ingredient ingredientData)
+  internal Ingredient CreateIngredient(Ingredient ingredientData, string userId)
   {
     Recipe recipe = _recipesService.GetRecipeById(ingredientData.RecipeId);
 
     if (recipe == null)
     {
       throw new Exception($"{recipe.Title} was removed");
+    }
+
+    if (recipe.CreatorId != userId)
+    {
+      throw new Exception("You cannot add an ingredient to a recipe that you did not create!");
     }
 
     Ingredient ingredient = _repository.CreateIngredient(ingredientData);
@@ -48,6 +53,14 @@ public class IngredientsService
   internal string DestroyIngredient(int ingredientId, string userId)
   {
     Ingredient ingredient = GetIngredientById(ingredientId);
+
+    Recipe recipe = _recipesService.GetRecipeById(ingredient.RecipeId);
+
+    if (recipe.CreatorId != userId)
+    {
+      throw new Exception("You cannot add remove an ingredient from a recipe that you did not create!");
+    }
+
     _repository.DestroyIngredient(ingredientId);
     return "Ingredient was deleted!";
   }
