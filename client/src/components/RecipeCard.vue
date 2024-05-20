@@ -30,7 +30,7 @@ async function getRecipeById(){
       <div class="row m-0 d-block">
         <div class="d-inline rounded rounded-pill category-tag mt-2">{{ recipe.category }}</div>
         <span class="d-inline"><i class="mdi mdi-heart-outline fs-3" role="button"></i></span>
-        <div class="bg-glass">
+        <div class="bg-glass card-bottom">
           <div>{{ recipe.title }}</div>
         </div>
       </div>
@@ -67,13 +67,19 @@ border-radius: 5px;
 //Fixme - Fix the margin-top for the title
 .bg-glass{
   background-color: rgba(105, 97, 97, 0.732);
-  margin-top: 35vh;
+  width: max-content;
   font-size: larger;
   font-weight: 500;
   color: white;
   border-radius: 3px;
   padding-left: 5px;
   padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+.card-bottom{
+  position:absolute;
+  bottom: 8px;
 }
 
 </style>

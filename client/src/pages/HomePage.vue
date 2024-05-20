@@ -10,7 +10,8 @@ import { recipesService } from "../services/RecipesService.js";
 import ModalWrap from "../components/ModalWrap.vue";
 import RecipeModal from "../components/RecipeModal.vue";
 
-const recipes = computed(()=>AppState.recipes)
+const recipes = computed(()=> AppState.recipes)
+const account = computed(()=> AppState.account)
 
 async function getRecipes(){
   try {
@@ -34,17 +35,23 @@ onMounted(()=>{
           <div><Searchbar/></div>
           <div><Login/></div>
       </div>
-      <div class="text-white text-center shadow col-12">
-        <h1>All-Spice</h1>
+      <div class="text-white text-center txt-shadow col-12">
+        <h1 class="lrg-font">All-Spice</h1>
         <h5>Cherish Your Family <br> And Their Cooking</h5>
       </div>
     </div>
     <!-- //FIXME - Make container overlap with hero img & Make selectable tags -->
     <div class="container bg-white shadow rounded">
-      <div class=" d-flex justify-content-center">
-        <h2 class="px-4">Home</h2>
-        <h2 class="px-4">My Recipes</h2>
-        <h2 class="px-4">Favorites</h2>
+      <div class="d-flex justify-content-center">
+        <RouterLink :to="{name: 'Home'}">
+          <h2 class="px-4 selectable" role="button">Home</h2>
+        </RouterLink>
+        <RouterLink :to="{name: 'About'}">
+          <h2 class="px-4 selectable" role="button">My Recipes</h2>
+        </RouterLink>
+        <RouterLink :to="{name: 'Home'}">
+          <h2 class="px-4 selectable" role="button">Favorites</h2>
+        </RouterLink>
       </div>
     </div>
 
@@ -58,6 +65,12 @@ onMounted(()=>{
       <RecipeModal/>
     </ModalWrap>
     
+    <!-- //SECTION - Create Recipe Button -->
+    <button v-if="account" data-bs-toggle="modal" data-bs-target="#create-recipe-modal" class="add-button"><i class="mdi mdi-plus"></i></button>
+    <ModalWrap modalId="create-recipe-modal">
+
+    </ModalWrap>
+
 </template>
 
 <style scoped lang="scss">
@@ -71,5 +84,40 @@ margin-top: 35px;
 margin-left: 35px;
 margin-right: 35px;
 border-radius: 10px;
+}
+
+.add-button{
+  background-color: rgba(82, 163, 100, 0.925);
+  font-size: xx-large;
+  font-weight: 900;
+  color: white;
+  height: 60px;
+  aspect-ratio: 1/1;
+  border-radius: 50em;
+  position: sticky;
+  bottom: 2dvh;
+  left: 100%;
+  margin-right: 2dvh;
+  border-color: rgba(255, 255, 255, 0);
+  box-shadow: 2px 2px 2px black;
+}
+
+button:hover{
+  color: black;
+  transform: rotate(360deg);
+  transition: .5s;
+  box-shadow: none;
+}
+
+div a{
+  color:  rgba(82, 163, 100);
+}
+
+.txt-shadow{
+  text-shadow: 2px 2px 2px black;
+}
+
+.lrg-font{
+  font-size: 60px;
 }
 </style>
