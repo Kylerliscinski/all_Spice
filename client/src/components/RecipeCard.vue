@@ -45,7 +45,7 @@ background-image: v-bind(recipeImg);
 background-position: center;
 background-size: cover;
 height: 50vh;
-width: 48vh;
+width: 45vh;
 margin-top: 10px;
 padding-left: 10px;
 padding-right: 10px;

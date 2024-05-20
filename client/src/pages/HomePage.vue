@@ -32,9 +32,9 @@ onMounted(()=>{
 <template>
   <!-- //SECTION - Large image & router links -->
     <div class="hero-img shadow row">
-      <div class="col-12 d-flex justify-content-end">
-          <div><Searchbar/></div>
+      <div class="col-12 d-flex justify-content-start">
           <div><Login/></div>
+          <div><Searchbar/></div>
       </div>
       <div class="text-white text-center txt-shadow col-12">
         <h1 class="lrg-font">All-Spice</h1>
@@ -42,25 +42,31 @@ onMounted(()=>{
       </div>
     </div>
     <!-- //FIXME - Make container overlap with hero img & Make selectable tags -->
-    <div class="container bg-white shadow rounded">
-      <div class="d-flex justify-content-center">
-        <RouterLink :to="{name: 'Home'}">
-          <h2 class="px-4 selectable" role="button">Home</h2>
-        </RouterLink>
-    <!-- //FIXME - Add correct route -->
-        <RouterLink :to="{name: 'About'}">
-          <h2 class="px-4 selectable" role="button">My Recipes</h2>
-        </RouterLink>
-    <!-- //FIXME - Add correct route -->
-        <RouterLink :to="{name: 'Home'}">
-          <h2 class="px-4 selectable" role="button">Favorites</h2>
-        </RouterLink>
+    <div class="container bg-white shadow rounded mt-3 mb-2">
+      <div class="row text-center justify-content-center mx-0 px-0">
+        <div class="col-12 col-md-3">
+          <RouterLink :to="{name: 'Home'}">
+            <h2 class="px-4 selectable" role="button">Home</h2>
+          </RouterLink>
+        </div>
+        <div class="col-12 col-md-3">
+          <!-- //FIXME - Add correct route -->
+          <RouterLink :to="{name: 'About'}">
+            <h2 class="px-4 selectable" role="button">My Recipes</h2>
+          </RouterLink>
+        </div>
+        <div class="col-12 col-md-3">
+          <!-- //FIXME - Add correct route -->
+          <RouterLink :to="{name: 'Home'}">
+            <h2 class="px-4 selectable" role="button">Favorites</h2>
+          </RouterLink>
+        </div>
       </div>
     </div>
 
     <!-- //SECTION - Recipe cards -->
-    <div class="row m-0 g-3">
-      <div v-for="recipe in recipes" :key="recipe.id" data-bs-toggle="modal" data-bs-target="#recipe-modal" class="col-12 col-lg-4 col-sm-6">
+    <div class="row mx-0 g-3">
+      <div v-for="recipe in recipes" :key="recipe.id" data-bs-toggle="modal" data-bs-target="#recipe-modal" class="col-12 col-lg-3 col-md-4 col-sm-6">
         <RecipeCard :recipe="recipe"/>
       </div>
     </div>
