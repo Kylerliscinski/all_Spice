@@ -9,6 +9,7 @@ import { logger } from "../utils/Logger.js";
 import { recipesService } from "../services/RecipesService.js";
 import ModalWrap from "../components/ModalWrap.vue";
 import RecipeModal from "../components/RecipeModal.vue";
+import CreateRecipeForm from "../components/CreateRecipeForm.vue";
 
 const recipes = computed(()=> AppState.recipes)
 const account = computed(()=> AppState.account)
@@ -46,9 +47,11 @@ onMounted(()=>{
         <RouterLink :to="{name: 'Home'}">
           <h2 class="px-4 selectable" role="button">Home</h2>
         </RouterLink>
+    <!-- //FIXME - Add correct route -->
         <RouterLink :to="{name: 'About'}">
           <h2 class="px-4 selectable" role="button">My Recipes</h2>
         </RouterLink>
+    <!-- //FIXME - Add correct route -->
         <RouterLink :to="{name: 'Home'}">
           <h2 class="px-4 selectable" role="button">Favorites</h2>
         </RouterLink>
@@ -65,10 +68,10 @@ onMounted(()=>{
       <RecipeModal/>
     </ModalWrap>
     
-    <!-- //SECTION - Create Recipe Button -->
+    <!-- //SECTION - Create Recipe Button & modal -->
     <button v-if="account" data-bs-toggle="modal" data-bs-target="#create-recipe-modal" class="add-button"><i class="mdi mdi-plus"></i></button>
     <ModalWrap modalId="create-recipe-modal">
-
+      <CreateRecipeForm/>
     </ModalWrap>
 
 </template>

@@ -6,6 +6,13 @@ import { api } from "./AxiosService.js"
 
 
 class RecipesService{
+  async createRecipe(recipeData) {
+    const response = await api.post('api/recipes', recipeData)
+    logger.log("Created recipe", response.data)
+    const recipe = new Recipe(response.data)
+    AppState.recipes.push(recipe)
+    return recipe
+  }
   async getRecipeById(recipeId) {
     const response = await api.get(`api/recipes/${recipeId}`)
     logger.log("Got recipe by its id", response.data)
