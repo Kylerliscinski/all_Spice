@@ -47,6 +47,7 @@ async function createRecipe(){
 
 
 <template>
+  <h1 class="header">New recipe</h1>
   <div class="container-fluid">
     <form @submit.prevent="createRecipe()" class="row">
       <div class="mb-3 col-6">
@@ -80,5 +81,13 @@ async function createRecipe(){
 
 
 <style lang="scss" scoped>
+
+.header{
+  background-color: rgba(82, 163, 100, 0.925);
+  color: white;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 
 </style>

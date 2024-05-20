@@ -41,7 +41,8 @@ onMounted(()=>{
         <h5>Cherish Your Family <br> And Their Cooking</h5>
       </div>
     </div>
-    <!-- //FIXME - Make container overlap with hero img & Make selectable tags -->
+
+    <!-- //SECTION - Router links -->
     <div class="container bg-white shadow rounded mt-3 mb-2">
       <div class="row text-center justify-content-center mx-0 px-0">
         <div class="col-12 col-md-3">
@@ -65,7 +66,7 @@ onMounted(()=>{
     </div>
 
     <!-- //SECTION - Recipe cards -->
-    <div class="row mx-0 g-3">
+    <div class="row mx-0">
       <div v-for="recipe in recipes" :key="recipe.id" data-bs-toggle="modal" data-bs-target="#recipe-modal" class="col-12 col-lg-3 col-md-4 col-sm-6">
         <RecipeCard :recipe="recipe"/>
       </div>
@@ -106,9 +107,9 @@ border-radius: 10px;
   position: sticky;
   bottom: 2dvh;
   left: 100%;
-  margin-right: 2dvh;
   border-color: rgba(255, 255, 255, 0);
   box-shadow: 2px 2px 2px black;
+  margin-right: 15px;
 }
 
 button:hover{
