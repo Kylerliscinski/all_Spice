@@ -9,9 +9,6 @@ const account = computed(() => AppState.account)
 
 const recipeImg = computed(() => `url(${props.recipe.img})`)
 
-async function createFavorite
-
-
 </script>
 
 

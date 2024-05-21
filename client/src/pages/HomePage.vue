@@ -11,27 +11,18 @@ import ModalWrap from "../components/ModalWrap.vue";
 import RecipeModal from "../components/RecipeModal.vue";
 import CreateRecipeForm from "../components/CreateRecipeForm.vue";
 
-const recipes = computed(()=> AppState.recipes)
+const filterBy = ref('all')
+
 const account = computed(()=> AppState.account)
-const favoriteRecipes = computed(() => AppState.favoriteRecipes)
 const userRecipes = computed(() => AppState.userRecipes)
 
-const activeFilter = ref('all')
+const recipes = computed(()=> AppState.recipes)
+// {
+//   if(filterBy.value == 'all') {return AppState.recipes}
+//   if(filterBy.value == 'favorites') {return AppState.favoriteRecipes.filter(recipe => recipe.creatorId == AppState.account.id)}
+//   if(filterBy.value == 'my recipes'){return AppState.recipes.filter(recipe => recipe.creatorId == AppState.account.id)} else
+//   return AppState.recipes.filter(recipe => recipe.category == filterBy.value)})
 
-const displayedRecipes = computed(() => {
-  if(activeFilter.value == 'favorites')
-  {
-    return AppState.favoriteRecipes
-  }
-  else if (activeFilter.value == 'user'){
-    return AppState.userRecipes
-  }
-  return AppState.recipes
-})
-
-function updateDisplay(){
-  if(activeFilter.value == 'all') activeFilter.value = 'all'
-}
 
 async function getFavorites(){
   try {
@@ -41,14 +32,6 @@ async function getFavorites(){
     logger.error(error)
   }
 }
-
-function filter(filterName){
-  activeFilter.value = filterName
-}
-
-watch(recipes, updateDisplay)
-
-watch(account, getFavorites)
 
 async function getRecipes(){
   try {
@@ -88,13 +71,13 @@ onMounted(()=>{
     <div class="container bg-white shadow rounded mt-3 mb-2">
       <div class="row text-center justify-content-center mx-0 px-0">
         <div class="col-12 col-md-3">
-            <h2 @click="filter('all')" class="px-4 selectable" role="button">Home</h2>
+            <h2 @click="filterBy = 'all'" class="px-4 selectable" role="button">Home</h2>
         </div>
         <div class="col-12 col-md-3">
-            <h2 @click="filter('user')" class="px-4 selectable" role="button">My Recipes</h2>
+            <h2 @click="filterBy = 'my recipes'" class="px-4 selectable" role="button">My Recipes</h2>
         </div>
         <div class="col-12 col-md-3">
-            <h2 @click="filter('favorites')" class="px-4 selectable" role="button">Favorites</h2>
+            <h2 @click="filterBy = 'favorites'" class="px-4 selectable" role="button">Favorites</h2>
         </div>
       </div>
     </div>
@@ -102,7 +85,7 @@ onMounted(()=>{
 
     <!-- //SECTION - Recipe cards -->
     <div class="row mx-0">
-      <div v-for="recipe in recipes" :key="recipe.id" class="col-12 col-lg-3 col-md-4 col-sm-6">
+      <div v-for="recipe in recipes" :key="recipe?.id" class="col-12 col-lg-3 col-md-4 col-sm-6">
         <RecipeCard @click="getOneRecipe(recipe)" :recipe="recipe"/>
       </div>
     </div>

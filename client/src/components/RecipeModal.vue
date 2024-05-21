@@ -3,6 +3,8 @@ import { computed } from "vue";
 import { AppState } from "../AppState.js";
 
 const recipe = computed(()=>AppState.activeRecipe)
+const recipeImg = computed(() => `url(${recipe.value?.img})`)
+
 
 </script>
 
@@ -83,7 +85,7 @@ const recipe = computed(()=>AppState.activeRecipe)
 }
 
 .recipe-img{
-  background-image: url(https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+  background-image: v-bind(recipeImg);
   background-position: center;
   background-size: cover;
   height: 100dvh;
