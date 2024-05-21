@@ -23,6 +23,11 @@ async function getRecipes(){
   }
 }
 
+async function getOneRecipe(recipe)
+{
+  AppState.activeRecipe = recipe
+}
+
 onMounted(()=>{
   getRecipes()
 })
@@ -67,8 +72,8 @@ onMounted(()=>{
 
     <!-- //SECTION - Recipe cards -->
     <div class="row mx-0">
-      <div v-for="recipe in recipes" :key="recipe.id" data-bs-toggle="modal" data-bs-target="#recipe-modal" class="col-12 col-lg-3 col-md-4 col-sm-6">
-        <RecipeCard :recipe="recipe"/>
+      <div v-for="recipe in recipes" :key="recipe.id" class="col-12 col-lg-3 col-md-4 col-sm-6">
+        <RecipeCard @click="getOneRecipe(recipe)" :recipe="recipe"/>
       </div>
     </div>
     <ModalWrap modalId="recipe-modal">

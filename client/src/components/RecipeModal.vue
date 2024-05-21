@@ -1,34 +1,14 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { AppState } from "../AppState.js";
-import { useRoute } from "vue-router";
-import Pop from "../utils/Pop.js";
-import { logger } from "../utils/Logger.js";
-import { recipesService } from "../services/RecipesService.js";
 
-
-const recipes = computed(()=>AppState.activeRecipe)
-const route = useRoute()
-
-async function getRecipeById(){
-  try {
-    await recipesService.getRecipeById(route.params.recipeId)
-  } catch (error) {
-    Pop.toast("Could not get the recipe by its id", 'error')
-    logger.error(error)
-  }
-}
-
-//FIXME - Needs to wait for click before getting recipe
-// onMounted(()=>{
-//   getRecipeById()
-// })
+const recipe = computed(()=>AppState.activeRecipe)
 
 </script>
 
 
 <template>
-  <div class="container-fluid">
+  <div v-if="recipe" class="container-fluid">
     <div class="row">
       <div class="col-5 recipe-img">
       
@@ -36,16 +16,14 @@ async function getRecipeById(){
 
       <div class="col-7">
         <div class="container p-4">
-          <h2 class="text-color">Good Soup</h2>
-          <h4 class="category-tag rounded-pill">Dinner</h4>
+          <h2 class="text-color">{{ recipe.title }}</h2>
+          <h4 class="category-tag rounded-pill">{{ recipe.category }}</h4>
           <div class="row">
             <div class="col-6">
               <div class="card">
-                <h2 class="text-center bg-green card-header">Recipe Steps</h2>
+                <h2 class="text-center bg-green card-header">Instructions</h2>
                 <div class="card-body bg-lightGreen">
-                  <p>1. In a Dutch oven, cook bacon over medium heat until crisp. Remove to paper towels with a slotted spoon; drain, reserving 1 tablespoon drippings. Saute onion in drippings until tender. Add garlic; cook 1 minute longer.2. Stir in the broth, pumpkin, salt, nutmeg and pepper. Bring to a boil. Reduce heat; simmer, uncovered, for 10 minutes. Cool slightly.
-                  3. In a blender, process soup in batches until smooth. Return all to pan. Stir in cream; heat through. Add cheese; stir until melted. Sprinkle each serving with parsley, bacon and, if desired, additional cheese.  
-                </p>
+                  <p>{{ recipe.instructions }}</p>
                 <form>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Add step...">
