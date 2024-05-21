@@ -1,4 +1,5 @@
 import { AppState } from "../AppState.js"
+import { Favorite } from "../models/Favorite.js"
 import { Recipe } from "../models/Recipe.js"
 import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
@@ -6,6 +7,19 @@ import { api } from "./AxiosService.js"
 
 
 class RecipesService{
+  async getFavorites() {
+    const response = await api.get('account/favorites')
+    const favorites = response.data.map(favData => new Favorite(favData))
+
+    const userFavorites = favorites.filter(favorite => favorite.creatorId == AppState.account.id)
+    AppState.userFavorites = userFavorites
+
+    const userFavoriteRecipes = userFavorites.map(favRecipeData => new Recipe(favRecipeData))
+    AppState.favoriteRecipes = userFavoriteRecipes
+
+    const userRecipes = AppState.recipes.filter(recipe => recipe.creator.id == AppState.account.id)
+    AppState.userRecipes = userRecipes
+  }
   async createRecipe(recipeData) {
     const response = await api.post('api/recipes', recipeData)
     logger.log("Created recipe", response.data)

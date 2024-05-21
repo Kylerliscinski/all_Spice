@@ -2,7 +2,7 @@
 import Login from "../components/Login.vue";
 import Searchbar from "../components/Searchbar.vue";
 import RecipeCard from "../components/RecipeCard.vue";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { AppState } from "../AppState.js";
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
@@ -13,6 +13,42 @@ import CreateRecipeForm from "../components/CreateRecipeForm.vue";
 
 const recipes = computed(()=> AppState.recipes)
 const account = computed(()=> AppState.account)
+const favoriteRecipes = computed(() => AppState.favoriteRecipes)
+const userRecipes = computed(() => AppState.userRecipes)
+
+const activeFilter = ref('all')
+
+const displayedRecipes = computed(() => {
+  if(activeFilter.value == 'favorites')
+  {
+    return AppState.favoriteRecipes
+  }
+  else if (activeFilter.value == 'user'){
+    return AppState.userRecipes
+  }
+  return AppState.recipes
+})
+
+function updateDisplay(){
+  if(activeFilter.value == 'all') activeFilter.value = 'all'
+}
+
+async function getFavorites(){
+  try {
+    await recipesService.getFavorites()
+  } catch (error) {
+    Pop.toast("Could not get favorites", 'error')
+    logger.error(error)
+  }
+}
+
+function filter(filterName){
+  activeFilter.value = filterName
+}
+
+watch(recipes, updateDisplay)
+
+watch(account, getFavorites)
 
 async function getRecipes(){
   try {
@@ -27,6 +63,7 @@ async function getOneRecipe(recipe)
 {
   AppState.activeRecipe = recipe
 }
+
 
 onMounted(()=>{
   getRecipes()
@@ -51,24 +88,17 @@ onMounted(()=>{
     <div class="container bg-white shadow rounded mt-3 mb-2">
       <div class="row text-center justify-content-center mx-0 px-0">
         <div class="col-12 col-md-3">
-          <RouterLink :to="{name: 'Home'}">
-            <h2 class="px-4 selectable" role="button">Home</h2>
-          </RouterLink>
+            <h2 @click="filter('all')" class="px-4 selectable" role="button">Home</h2>
         </div>
         <div class="col-12 col-md-3">
-          <!-- //FIXME - Add correct route -->
-          <RouterLink :to="{name: 'About'}">
-            <h2 class="px-4 selectable" role="button">My Recipes</h2>
-          </RouterLink>
+            <h2 @click="filter('user')" class="px-4 selectable" role="button">My Recipes</h2>
         </div>
         <div class="col-12 col-md-3">
-          <!-- //FIXME - Add correct route -->
-          <RouterLink :to="{name: 'Home'}">
-            <h2 class="px-4 selectable" role="button">Favorites</h2>
-          </RouterLink>
+            <h2 @click="filter('favorites')" class="px-4 selectable" role="button">Favorites</h2>
         </div>
       </div>
     </div>
+    
 
     <!-- //SECTION - Recipe cards -->
     <div class="row mx-0">

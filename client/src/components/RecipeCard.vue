@@ -1,33 +1,16 @@
 <script setup>
 import { computed } from "vue";
 import { Recipe } from "../models/Recipe.js";
-import Pop from "../utils/Pop.js";
-import { logger } from "../utils/Logger.js";
 import { AppState } from "../AppState.js";
-import { favoritesService } from "../services/FavoritesService.js";
-import { Favorite } from "../models/Favorite.js";
 
-const props = defineProps({recipe: {type: [Recipe, Favorite], required: true}})
+const props = defineProps({recipe: {type: Recipe, required: true}})
+const userFavorites = computed(() => AppState.userFavorites)
+const account = computed(() => AppState.account)
 
 const recipeImg = computed(() => `url(${props.recipe.img})`)
 
-const favorites = computed(() => AppState.favorites)
+async function createFavorite
 
-// @ts-ignore
-const isFavorite = computed(() => AppState.favorites.find(favorite => favorite.recipeId == props.recipe.id))
-
-async function toggleFavoriteRecipe(){
-  try {
-    if(isFavorite.value){
-      await favoritesService.unFavorite(isFavorite.value.id)
-    } else {
-      await favoritesService.favorite(props.recipe.id)
-    } 
-  } catch (error) {
-    Pop.toast("Could not favorite this recipe", 'error')
-    logger.error(error)
-  }
-}
 
 </script>
 
@@ -36,9 +19,9 @@ async function toggleFavoriteRecipe(){
     <div class="container recipe-img shadow-lg selectable">
       <div class="row m-0 d-block">
         <div class="d-inline rounded rounded-pill category-tag mt-2">{{ recipe.category }}</div>
-        <span role="button" v-if="favorites" class="col-1 me-2 ">
-          <i v-if="isFavorite" @click="toggleFavoriteRecipe()" class="mdi mdi-heart text-danger"></i>
-          <i v-else @click="toggleFavoriteRecipe()" class="mdi mdi-heart-outline"></i>
+        <span role="button" class="col-1 me-2 ">
+          <i v-if="account && userFavorites.find(fav => fav.id == recipe.id)" class="mdi mdi-heart text-danger"></i>
+          <i v-else class="mdi mdi-heart-outline"></i>
         </span>
         <div data-bs-toggle="modal" data-bs-target="#recipe-modal" class="bg-glass card-bottom selectable">
           <div>{{ recipe.title }}</div>
